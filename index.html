@@ -8,10 +8,42 @@
 <meta property="og:title" content="Didikids Parc – Aire de Jeux Intérieure Conakry">
 <meta property="og:description" content="Un espace amusant et sûr pour jouer, fêter les anniversaires et créer des souvenirs inoubliables.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://www.didikidsparc.com">
+<meta property="og:locale" content="fr_FR">
+<meta name="theme-color" content="#2a7a3b">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AmusementPark",
+  "name": "Didikids Parc",
+  "url": "https://www.didikidsparc.com",
+  "telephone": "+224628131974",
+  "email": "didikidsparck@gmail.com",
+  "priceRange": "GNF",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Carrefour Transit, route Hôtel Mariador",
+    "addressLocality": "Taouyah, Conakry",
+    "addressCountry": "GN"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 9.584022, "longitude": -13.660344 },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "11:00",
+    "closes": "21:00"
+  }],
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61590366210753",
+    "https://www.instagram.com/didikids.parc",
+    "https://www.tiktok.com/@didikids.parc"
+  ]
+}
+</script>
 <link rel="canonical" href="https://www.didikidsparc.com">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Didikids Parc – Aire de Jeux Intérieure</title>
+<title>Didikids Parc – Aire de Jeux Intérieure à Conakry (Taouyah)</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -46,6 +78,7 @@
   .nav-links a { text-decoration:none; color:var(--text); font-weight:700; font-size:0.9rem; transition:color .2s; }
   .nav-links a:hover { color:var(--green-main); }
   .nav-cta { background:var(--green-dark)!important; color:white!important; padding:10px 22px; border-radius:50px; transition:transform .2s, background .2s!important; }
+  .nav-toggle { display:none; background:none; border:none; font-size:1.8rem; color:var(--green-dark); cursor:pointer; line-height:1; }
   .nav-cta:hover { background:var(--green-main)!important; transform:scale(1.05); }
 
   /* ===== HERO ===== */
@@ -211,7 +244,7 @@
   .faq-q:hover { background:var(--green-pale); }
   .faq-icon { font-size:1.2rem; transition:transform .3s; flex-shrink:0; }
   .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease, padding .3s; padding:0 24px; font-size:.93rem; color:#4a6b4d; line-height:1.7; font-weight:600; }
-  .faq-item.open .faq-a { max-height:200px; padding:0 24px 18px; }
+  .faq-item.open .faq-a { max-height:400px; padding:0 24px 18px; }
   .faq-item.open .faq-icon { transform:rotate(45deg); }
 
   /* ===== CONTACT ===== */
@@ -267,7 +300,11 @@
   }
   @media(max-width:640px){
     nav { padding:14px 18px; }
-    .nav-links { display:none; }
+    .nav-toggle { display:block; }
+    .nav-links { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; background:white; padding:8px 18px 18px; box-shadow:0 12px 24px rgba(0,0,0,.08); }
+    .nav-links.open { display:flex; }
+    .nav-links li a { display:block; padding:12px 4px; font-size:1rem; }
+    .nav-links li a.nav-cta { text-align:center; margin-top:8px; }
     section { padding:60px 20px; }
     .hero { padding:100px 20px 60px; }
     .stats { gap:28px; padding:22px; }
@@ -366,6 +403,11 @@
   }
   .nl-form button:hover { transform:scale(1.04); }
 
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
+    .reveal { opacity:1; transform:none; }
+  }
+
   /* Reveal animations */
   .reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease, transform .6s ease; }
   .reveal.visible { opacity:1; transform:translateY(0); }
@@ -375,8 +417,9 @@
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="nav-logo">🐻 Didikids <em>Parc</em></a>
-  <ul class="nav-links">
+  <a href="#accueil" class="nav-logo">🐻 Didikids <em>Parc</em></a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
+  <ul class="nav-links" id="nav-links">
     <li><a href="#zones">Le Parc</a></li>
     <li><a href="#anniversaires">Anniversaires</a></li>
     <li><a href="#tarifs">Tarifs</a></li>
@@ -418,7 +461,7 @@
   <div class="stat"><span class="stat-n">14</span><span class="stat-l">Zones de jeux</span></div>
   <div class="stat"><span class="stat-n">500+</span><span class="stat-l">Familles heureuses</span></div>
   <div class="stat"><span class="stat-n">200+</span><span class="stat-l">Anniversaires célébrés</span></div>
-  <div class="stat"><span class="stat-n">7j/7</span><span class="stat-l">Ouvert toute la semaine</span></div>
+  <div class="stat"><span class="stat-n">6j/7</span><span class="stat-l">Du mardi au dimanche</span></div>
   <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Sécurisé & supervisé</span></div>
 </div>
 
@@ -505,7 +548,7 @@
     </div>
     <div class="feat reveal">
       <div class="feat-icon">🌈</div>
-      <h4>6 Zones Distinctes</h4>
+      <h4>13 Zones de Jeux</h4>
       <p>Balles, toboggan, foot, Lego, arcade, parcours — il y en a pour tous les goûts et tous les âges.</p>
     </div>
     <div class="feat reveal">
@@ -671,28 +714,28 @@
   <p class="s-sub">Tout ce que vous devez savoir avant votre visite.</p>
   <div class="faq-list">
     <div class="faq-item">
-      <div class="faq-q">À partir de quel âge peut-on venir ? <span class="faq-icon">+</span></div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">À partir de quel âge peut-on venir ? <span class="faq-icon">+</span></div>
       <div class="faq-a">Le parc accueille les enfants dès 1 an. Certaines zones sont adaptées aux tout-petits (0–3 ans) avec des structures plus douces et sécurisées, tandis que d'autres conviennent aux plus grands.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Les parents doivent-ils payer une entrée ? <span class="faq-icon">+</span></div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Les parents doivent-ils payer une entrée ? <span class="faq-icon">+</span></div>
       <div class="faq-a">L'accès à l'espace parents est gratuit. Il est confortable, avec Wi-Fi et vue sur les enfants. Seuls les enfants qui jouent paient l'entrée.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Peut-on manger sur place ? <span class="faq-icon">+</span></div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Peut-on manger sur place ? <span class="faq-icon">+</span></div>
       <div class="faq-a">Oui ! Nous proposons des snacks, repas légers et boissons pour les enfants et les parents. Vous pouvez aussi apporter le gâteau d'anniversaire pour les fêtes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Comment réserver une fête d'anniversaire ? <span class="faq-icon">+</span></div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Comment réserver une fête d'anniversaire ? <span class="faq-icon">+</span></div>
       <div class="faq-a">Remplissez le formulaire de contact en bas de page ou appelez-nous directement. Nous vous contacterons sous 24h pour finaliser les détails et confirmer votre réservation.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Faut-il des chaussettes spéciales ? <span class="faq-icon">+</span></div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Faut-il des chaussettes spéciales ? <span class="faq-icon">+</span></div>
       <div class="faq-a">Pour des raisons d'hygiène et de sécurité, le port de chaussettes est obligatoire dans toutes les zones de jeux. Vous pouvez en acheter sur place si besoin.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Quels sont les horaires d'ouverture ? <span class="faq-icon">+</span></div>
-      <div class="faq-a">Nous sommes ouverts tous les jours de 9h00 à 20h00. Pendant les vacances scolaires, les horaires peuvent être étendus. Suivez-nous sur Facebook et Instagram pour les mises à jour.</div>
+      <div class="faq-q" role="button" tabindex="0" aria-expanded="false">Quels sont les horaires d'ouverture ? <span class="faq-icon">+</span></div>
+      <div class="faq-a">Nous sommes ouverts du mardi au dimanche, de 11h00 à 21h00 (fermé le lundi). Pendant les vacances scolaires, les horaires peuvent être étendus. Suivez-nous sur Facebook et Instagram pour les mises à jour.</div>
     </div>
   </div>
 </section>
@@ -706,11 +749,11 @@
       <h3>Venir nous voir 🐻</h3>
       <div class="c-item">
         <div class="c-icon">📍</div>
-        <div><strong>Adresse</strong><span>Quartier Taouyah, Conakry, Guinée</span></div>
+        <div><strong>Adresse</strong><span>Carrefour Transit, route Hôtel Mariador, Taouyah, Conakry, Guinée</span></div>
       </div>
       <div class="c-item">
         <div class="c-icon">📞</div>
-        <div><strong>Téléphone</strong><span>+224 628 13 19 74</span></div>
+        <div><strong>Téléphone</strong><span><a href="tel:+224628131974" style="color:inherit">+224 628 13 19 74</a></span></div>
       </div>
       <div class="c-item">
         <div class="c-icon">⏰</div>
@@ -718,7 +761,7 @@
       </div>
       <div class="c-item">
         <div class="c-icon">📧</div>
-        <div><strong>Email</strong><span>didikidsparck@gmail.com</span></div>
+        <div><strong>Email</strong><span><a href="mailto:didikidsparck@gmail.com" style="color:inherit">didikidsparck@gmail.com</a></span></div>
       </div>
       <div class="c-item">
         <div class="c-icon">📱</div>
@@ -748,20 +791,20 @@
         <input type="hidden" name="_replyto" id="reply-email">
 
         <div class="fg">
-          <label>Prénom & Nom *</label>
-          <input type="text" name="nom" placeholder="Ex : Aïssatou Diallo" required>
+          <label for="f-nom">Prénom & Nom *</label>
+          <input type="text" name="nom" id="f-nom" placeholder="Ex : Aïssatou Diallo" required>
         </div>
         <div class="fg">
-          <label>Téléphone / WhatsApp *</label>
-          <input type="tel" name="telephone" placeholder="6XX XX XX XX" required>
+          <label for="f-tel">Téléphone / WhatsApp *</label>
+          <input type="tel" name="telephone" id="f-tel" placeholder="6XX XX XX XX" required>
         </div>
         <div class="fg">
-          <label>Email (facultatif)</label>
+          <label for="email-field">Email (facultatif)</label>
           <input type="email" name="email" id="email-field" placeholder="votre@email.com">
         </div>
         <div class="fg">
-          <label>Type de visite *</label>
-          <select name="type_visite" required>
+          <label for="f-type">Type de visite *</label>
+          <select name="type_visite" id="f-type" required>
             <option value="">-- Choisir --</option>
             <option>🎟️ Entrée enfant (90 000 GNF)</option>
             <option>👶 Garde avec animateur (+30 000 GNF)</option>
@@ -776,16 +819,16 @@
           </select>
         </div>
         <div class="fg">
-          <label>Date souhaitée *</label>
-          <input type="date" name="date" required>
+          <label for="f-date">Date souhaitée *</label>
+          <input type="date" name="date" id="f-date" required>
         </div>
         <div class="fg">
-          <label>Nombre d'enfants *</label>
-          <input type="number" name="nombre_enfants" placeholder="Ex : 3" min="1" required>
+          <label for="f-nb">Nombre d'enfants *</label>
+          <input type="number" name="nombre_enfants" id="f-nb" placeholder="Ex : 3" min="1" required>
         </div>
         <div class="fg">
-          <label>Message / Thème anniversaire</label>
-          <textarea name="message" placeholder="Précisez votre demande, thème souhaité pour l'anniversaire..."></textarea>
+          <label for="f-msg">Message / Thème anniversaire</label>
+          <textarea name="message" id="f-msg" placeholder="Précisez votre demande, thème souhaité pour l'anniversaire..."></textarea>
         </div>
 
         <p style="font-size:.76rem;color:#5a7a5d;text-align:center;margin-bottom:10px;">
@@ -793,12 +836,6 @@
         </p>
         <button type="submit" class="submit-btn" id="submit-btn">🎉 Envoyer ma réservation</button>
       </form>
-    </div>
-      <div class="fg"><label>Date souhaitée</label><input type="date"></div>
-      <div class="fg"><label>Nombre d'enfants</label><input type="number" placeholder="Ex : 15" min="1"></div>
-      <div class="fg"><label>Message (facultatif)</label><textarea placeholder="Précisez votre demande, thème souhaité..."></textarea></div>
-      <p style="font-size:.78rem;color:#5a7a5d;text-align:center;margin-bottom:8px;">📧 Votre réservation sera envoyée à didikidsparck@gmail.com</p>
-      <button class="submit-btn">🎉 Envoyer ma réservation</button>
     </div>
   </div>
 </section>
@@ -808,7 +845,7 @@
   <h2 style="font-family:'Fredoka One',cursive;font-size:2.2rem;color:var(--green-dark);margin-bottom:10px;">📍 Nous Trouver</h2>
   <p style="color:#4a6b4d;font-weight:700;margin-bottom:24px;">Carrefour Transit, route Hôtel Mariador, Taouyah, Conakry 🇬🇳</p>
   <div style="max-width:800px;margin:0 auto 22px;border-radius:20px;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.14);cursor:pointer;" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=9.584022,-13.660344','_blank')">
-    <iframe src="https://www.google.com/maps?q=9.584022,-13.660344&z=17&output=embed" width="100%" height="300" style="border:0;display:block;pointer-events:none;" loading="lazy"></iframe>
+    <iframe title="Plan d'accès Didikids Parc" src="https://www.google.com/maps?q=9.584022,-13.660344&z=17&output=embed" width="100%" height="300" style="border:0;display:block;pointer-events:none;" loading="lazy"></iframe>
   </div>
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
     <a href="https://www.google.com/maps/dir/?api=1&destination=9.584022,-13.660344" target="_blank" style="background:var(--green-dark);color:white;padding:14px 28px;border-radius:50px;font-family:'Fredoka One',cursive;font-size:1rem;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">🗺️ Obtenir l'itinéraire</a>
@@ -820,28 +857,29 @@
 <section class="newsletter">
   <h3>📬 Restez informés !</h3>
   <p>Promos, animations surprise et événements spéciaux — soyez les premiers à le savoir.</p>
-  <div class="nl-form">
-    <input type="email" placeholder="Votre adresse email">
-    <button>S'abonner 🎈</button>
-  </div>
+  <form class="nl-form" id="nl-form" action="https://formspree.io/f/mdajdjzb" method="POST">
+    <input type="hidden" name="_subject" value="📬 Nouvelle inscription newsletter - Didikids Parc">
+    <input type="email" name="email" placeholder="Votre adresse email" aria-label="Votre adresse email" required>
+    <button type="submit">S'abonner 🎈</button>
+  </form>
 </section>
 
 <!-- WhatsApp flottant -->
-<a class="wa-btn" href="https://wa.me/224628131974" target="_blank" rel="noopener">
+<a class="wa-btn" href="https://wa.me/224628131974" target="_blank" rel="noopener" aria-label="Nous écrire sur WhatsApp">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="26" height="26"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <!-- Back to top -->
-<button class="btt" id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+<button class="btt" id="btt" aria-label="Retour en haut" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <footer>
   <div class="f-logo">🐻 Didikids <em>Parc</em></div>
   <div class="f-tag">« Parce que chaque enfant mérite de s'épanouir »</div>
   <div class="f-socials">
-    <a class="soc" href="https://www.facebook.com/profile.php?id=61590366210753" target="_blank" rel="noopener" style="background:#1877f2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
-    <a class="soc" href="https://www.instagram.com/didikids.parc" target="_blank" rel="noopener" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
-    <a class="soc" href="https://www.tiktok.com/@didikids.parc" target="_blank" rel="noopener" style="background:#010101"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
-    <a class="soc" href="https://wa.me/224628131974" target="_blank" rel="noopener" style="background:#25d366"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+    <a class="soc" href="https://www.facebook.com/profile.php?id=61590366210753" target="_blank" rel="noopener" aria-label="Facebook" style="background:#1877f2"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+    <a class="soc" href="https://www.instagram.com/didikids.parc" target="_blank" rel="noopener" aria-label="Instagram" style="background:linear-gradient(45deg,#f09433,#dc2743,#bc1888)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+    <a class="soc" href="https://www.tiktok.com/@didikids.parc" target="_blank" rel="noopener" aria-label="TikTok" style="background:#010101"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+    <a class="soc" href="https://wa.me/224628131974" target="_blank" rel="noopener" aria-label="WhatsApp" style="background:#25d366"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18" height="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
   </div>
   <div class="f-links">
     <a href="#accueil">Accueil</a>
@@ -853,7 +891,7 @@
     <a href="#contact">Contact</a>
   </div>
   <hr class="f-hr">
-  <p class="f-copy">© 2025 Didikids Parc · Taouyah, Conakry 🇬🇳 · Fait avec ❤️ pour les enfants</p>
+  <p class="f-copy">© <span id="year">2025</span> Didikids Parc · Taouyah, Conakry 🇬🇳 · Fait avec ❤️ pour les enfants</p>
 </footer>
 
 <script>
@@ -865,12 +903,55 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // FAQ accordion
 document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
+  const toggle = () => {
     const item = q.parentElement;
     const wasOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
+    document.querySelectorAll('.faq-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) { item.classList.add('open'); q.setAttribute('aria-expanded', 'true'); }
+  };
+  q.addEventListener('click', toggle);
+  q.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
   });
+});
+
+// Mobile menu
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+navToggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', open);
+  navToggle.textContent = open ? '✕' : '☰';
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.textContent = '☰';
+}));
+
+// No booking in the past
+document.getElementById('f-date').min = new Date().toISOString().split('T')[0];
+
+// Footer year
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Newsletter
+document.getElementById('nl-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = this.querySelector('button');
+  btn.disabled = true;
+  try {
+    const res = await fetch(this.action, { method: 'POST', body: new FormData(this), headers: { 'Accept': 'application/json' } });
+    if (!res.ok) throw new Error('Erreur serveur');
+    this.reset();
+    btn.textContent = '✅ Inscrit !';
+  } catch(err) {
+    btn.textContent = '⚠️ Réessayer';
+    btn.disabled = false;
+  }
 });
 
 
