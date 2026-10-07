@@ -530,12 +530,10 @@
   .cine { padding:0; background:#07120a; position:relative; }
   .cine-sticky { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; }
   .cine-stage { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; will-change:transform; }
-  .cine-shot { position:absolute; inset:0; opacity:0; will-change:opacity; }
-  .cine-shot .bg { position:absolute; inset:-60px; background-size:cover; background-position:center; filter:blur(40px) brightness(.45) saturate(1.3); }
-  .cine-shot .pic { position:absolute; left:50%; top:50%; height:84%; aspect-ratio:3/4; translate:-50% -50%;
-    background-size:cover; background-position:center; border-radius:22px; will-change:transform;
-    box-shadow:0 40px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08), 0 0 90px rgba(245,197,24,.18); }
-  .cine-shot.wide .pic { aspect-ratio:1408/752; height:auto; width:min(88vw, 150vh); }
+  .cine-bg { position:absolute; inset:-80px; width:calc(100% + 160px); height:calc(100% + 160px); filter:blur(50px) brightness(.5) saturate(1.4); }
+  .cine-card { position:relative; height:86%; aspect-ratio:9/16; border-radius:24px; overflow:hidden; will-change:transform;
+    box-shadow:0 40px 120px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.1), 0 0 100px rgba(245,197,24,.22); background:#000; }
+  .cine-card video { width:100%; height:100%; object-fit:cover; display:block; }
   .cine-vignette { position:absolute; inset:0; pointer-events:none; background:linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 45%), radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,.65) 100%); }
   .cine-ring { position:absolute; left:50%; bottom:5%; width:min(46vh,70vw); aspect-ratio:4/1; translate:-50% 0; border-radius:50%;
     border:3px solid rgba(245,197,24,.75); box-shadow:0 0 40px rgba(245,197,24,.55), inset 0 0 30px rgba(245,197,24,.35); opacity:0; }
@@ -561,8 +559,7 @@
   .cine-end h2 { font-family:'Fredoka One',cursive; font-size:clamp(2.4rem,7vw,5rem); line-height:1; text-shadow:0 10px 40px rgba(0,0,0,.7); }
   .cine-end.on { pointer-events:auto; }
   @media(max-width:640px){
-    .cine-shot .pic { height:auto; width:100%; height:100%; border-radius:0; box-shadow:none; }
-    .cine-shot.wide .pic { width:100%; height:100%; }
+    .cine-card { height:100%; width:100%; aspect-ratio:auto; border-radius:0; box-shadow:none; }
     .cine-text { bottom:14vh; }
     .cine-hud { top:76px; }
     .cine-tag::before { width:22px; }
@@ -588,6 +585,7 @@
   <a href="#accueil" class="nav-logo"><span class="bear">🐻</span> Didikids <em>Parc</em></a>
   <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">☰</button>
   <ul class="nav-links" id="nav-links">
+    <li><a href="#visite">Visite</a></li>
     <li><a href="#zones">Le Parc</a></li>
     <li><a href="#anniversaires">Anniversaires</a></li>
     <li><a href="#tarifs">Tarifs</a></li>
@@ -644,7 +642,13 @@
 <!-- VISITE CINÉMA : scène fixe pilotée par le défilement -->
 <section class="cine" id="visite" aria-label="Visite du parc">
   <div class="cine-sticky">
-    <div class="cine-stage" id="cine-stage"></div>
+    <canvas class="cine-bg" id="cine-bg" width="36" height="64" aria-hidden="true"></canvas>
+    <div class="cine-stage" id="cine-stage">
+      <div class="cine-card"><video id="cine-video" muted playsinline preload="none" poster="media/visite-parc.jpg" aria-label="Visite vidéo du parc Didikids">
+        <source src="media/visite-parc.webm" type="video/webm">
+        <source src="media/visite-parc.mp4" type="video/mp4">
+      </video></div>
+    </div>
     <div class="cine-vignette"></div>
     <div class="cine-ring" id="cine-ring"></div>
     <div class="cine-tags" id="cine-tags"></div>
@@ -1270,50 +1274,57 @@ function frame() {
 requestAnimationFrame(frame);
 
 // ===== VISITE CINÉMA =====
-// Each chapter reuses a photo already in the gallery (index into .zone-card img).
-// To add better photos later: put the image in the gallery, then point `img` at it here.
+// The park video is scrubbed by the scroll position; chapters are timed on its scenes (seconds).
 const CHAPTERS = [
-  { img: 0,  wide: true, title: 'Bienvenue',              text: '13 zones de jeux sous un même toit.',        tags: [['Toboggan', 62, 30], ['Piscine à balles', 14, 62]] },
-  { img: 1,  title: 'La piscine à balles',   text: 'Des milliers de balles pour plonger, nager et rire.', tags: [['Balles géantes', 60, 28], ['Sol sécurisé', 12, 70]] },
-  { img: 7,  title: 'Les ponts suspendus',   text: 'Traverser au-dessus des balles, comme un aventurier.', tags: [['Filets de sécurité', 58, 22], ['Ponts', 14, 58]] },
-  { img: 11, title: 'Tunnels & passages',    text: 'Ramper, se cacher, ressortir de l\'autre côté !',     tags: [['Tunnels', 62, 36], ['Mousse douce', 12, 66]] },
-  { img: 12, title: 'Filets d\'escalade',    text: 'Pour les petits grimpeurs courageux.',               tags: [['Escalade', 60, 26], ['Filets rouges', 14, 60]] },
-  { img: 2,  title: 'Carrousel & piste',     text: 'Le carrousel tourne et la route attend les pilotes.', tags: [['Carrousel', 60, 30], ['Piste voiture', 12, 70]] },
-  { img: 9,  title: 'Et pour les parents…',  text: 'Canapés, Wi-Fi et café, avec vue sur les enfants.',   tags: [['Salon', 60, 30], ['Café', 14, 64]] },
+  { from: 0,    to: 4.8,  title: 'Le coin des petits',     text: 'Toboggan et mini-piscine à balles pour les tout-petits.', tags: ['Toboggan', 'Mousse douce'] },
+  { from: 4.8,  to: 7.7,  title: 'PlayStation & hockey',   text: 'Écrans géants, canapés et hockey de table.',            tags: ['PlayStation', 'Hockey table'] },
+  { from: 7.7,  to: 11.8, title: 'Lego géants & voitures', text: 'Construire, démolir, rouler… et on recommence !',       tags: ['Briques géantes', 'Voitures'] },
+  { from: 11.8, to: 13.7, title: 'Carrousel & mini-foot',  text: 'Un tour de manège, puis un but !',                      tags: ['Carrousel', 'Mini-foot'] },
+  { from: 13.7, to: 19.5, title: 'La grande aventure',     text: 'Piscine à balles, tunnels, filets et ponts suspendus.', tags: ['Piscine à balles', 'Filets d\'escalade'] },
+  { from: 19.5, to: 23.4, title: 'En toute sécurité',      text: 'Barrières, sols en mousse et personnel attentif.',      tags: ['Sécurisé', 'Espace parents'] },
 ];
 const cine = (() => {
   const sec = document.getElementById('visite');
-  if (!sec) return null;
-  const imgs = [...document.querySelectorAll('.zone-card img')];
+  const video = document.getElementById('cine-video');
+  if (!sec || !video) return null;
   const stage = document.getElementById('cine-stage');
+  const bg = document.getElementById('cine-bg');
+  const bgCtx = bg.getContext('2d');
   const textBox = document.getElementById('cine-text');
   const tagBox = document.getElementById('cine-tags');
-  const shots = [], chaps = [], tags = [];
+  const chaps = [], tags = [];
+  const TAG_POS = [[58, 24], [10, 58]];
   CHAPTERS.forEach((c, i) => {
-    const src = imgs[c.img] && imgs[c.img].src;
-    const sh = document.createElement('div');
-    sh.className = 'cine-shot' + (c.wide ? ' wide' : '');
-    sh.style.zIndex = i;
-    sh.innerHTML = `<div class="bg"></div><div class="pic" role="img" aria-label="${c.title}"></div>`;
-    sh.querySelector('.bg').style.backgroundImage = sh.querySelector('.pic').style.backgroundImage = `url("${src}")`;
-    stage.appendChild(sh);
-    shots.push({ sh, pic: sh.querySelector('.pic') });
     const ch = document.createElement('div');
     ch.className = 'cine-chap';
     ch.innerHTML = `<div class="cine-num">// ${String(i + 1).padStart(2, '0')}</div><h3>${c.title}</h3><p>${c.text}</p>`;
     textBox.appendChild(ch);
     chaps.push(ch);
-    c.tags.forEach(([label, x, y], k) => {
+    c.tags.forEach((label, k) => {
       const t = document.createElement('div');
       t.className = 'cine-tag';
       t.innerHTML = `<i></i>${label}`;
-      t.style.left = `min(${x}%, calc(100% - 200px))`; t.style.top = y + '%';
+      t.style.left = `min(${TAG_POS[k][0]}%, calc(100% - 200px))`; t.style.top = TAG_POS[k][1] + '%';
       tagBox.appendChild(t);
       tags.push({ t, i, k });
     });
   });
-  sec.style.height = (CHAPTERS.length + 2) * 100 + 'vh';
-  const N = CHAPTERS.length;
+  sec.style.height = '900vh';
+
+  // Load the video only when the visitor gets close to it (saves data)
+  new IntersectionObserver((es, o) => {
+    if (!es[0].isIntersecting) return;
+    o.disconnect();
+    video.preload = 'auto';
+    video.load();
+  }, { rootMargin: '1500px 0px' }).observe(sec);
+  // iOS needs one play() from a user gesture before seeking shows frames
+  const unlock = () => { video.play().then(() => video.pause()).catch(() => {}); };
+  window.addEventListener('touchstart', unlock, { once: true, passive: true });
+  const paintBg = () => { try { bgCtx.drawImage(video, 0, 0, bg.width, bg.height); } catch (e) {} };
+  video.addEventListener('seeked', paintBg);
+  video.addEventListener('loadeddata', paintBg);
+
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   const intro = document.getElementById('cine-intro');
@@ -1321,47 +1332,51 @@ const cine = (() => {
   const ring = document.getElementById('cine-ring');
   const bar = document.getElementById('cine-bar');
   const count = document.getElementById('cine-count');
-  const mobile = () => innerWidth <= 640;
+  const DUR = CHAPTERS[CHAPTERS.length - 1].to;
+  let shown = 0;
   return function update() {
     const r = sec.getBoundingClientRect();
     if (r.bottom < 0 || r.top > innerHeight) return;
     const p = clamp(-r.top / (r.height - innerHeight));
-    // 0 → .1 : intro, the first shot flies in from far away
-    const ip = clamp(p / .1);
+    // 0 → .08 : intro, the video card flies in
+    const ip = clamp(p / .08);
     intro.style.opacity = 1 - clamp(ip * 2.2);
     intro.style.transform = `scale(${1 + ip * .4})`;
-    stage.style.transform = `scale(${.35 + .65 * ease(ip)}) rotate(${(1 - ease(ip)) * -6}deg)`;
-    // .1 → .9 : chapters, camera pushes in on each photo, next one cross-fades on top
-    const pos = clamp((p - .1) / .8) * (N - 1 + .6);
-    shots.forEach(({ sh, pic }, i) => {
-      const d = pos - i;
-      sh.style.opacity = i === 0 ? 1 : clamp((d + .45) / .3);
-      const z = clamp((d + .5) / 1.6);
-      const s = mobile() ? 1.05 + z * .35 : .92 + z * .28;
-      const dx = (i % 2 ? -1 : 1) * (z - .5) * (mobile() ? 30 : 60);
-      pic.style.transform = `translate(${dx}px, ${(z - .5) * -30}px) scale(${s}) rotate(${(i % 2 ? 1 : -1) * (z - .5) * 2}deg)`;
-    });
+    // .08 → .92 : the scroll drives the video
+    const vp = clamp((p - .08) / .84);
+    const target = vp * (video.duration || DUR);
+    shown += (target - shown) * .2;
+    if (video.readyState >= 1 && !video.seeking && Math.abs(video.currentTime - shown) > .04) video.currentTime = shown;
+    const t = shown;
+    // camera: slow push-in within each chapter + slight sway
+    const ci = Math.max(0, CHAPTERS.findIndex(c => t < c.to));
+    const c = CHAPTERS[ci];
+    const lt = clamp((t - c.from) / (c.to - c.from));
+    const push = 1 + lt * .08;
+    const sway = (ci % 2 ? -1 : 1) * (lt - .5) * 2;
+    // .92 → 1 : outro
+    const op = clamp((p - .92) / .07);
+    const sc = (.35 + .65 * ease(ip)) * push * (1 - op * .2);
+    stage.style.transform = `scale(${sc}) rotate(${(1 - ease(ip)) * -6 + sway}deg)`;
+    stage.style.filter = op > 0 ? `brightness(${1 - op * .55})` : '';
     chaps.forEach((ch, i) => {
-      const d = pos - i;
-      ch.style.opacity = clamp((.42 - Math.abs(d)) / .18);
-      ch.style.transform = `translateY(${d * -90}px)`;
+      const d = (t - CHAPTERS[i].from) / (CHAPTERS[i].to - CHAPTERS[i].from);   // 0..1 inside its chapter
+      const vis = clamp(Math.min(d / .15, (1 - d) / .15));
+      ch.style.opacity = vis;
+      ch.style.transform = `translateY(${(1 - vis) * (d < .5 ? 60 : -60)}px)`;
     });
-    tags.forEach(({ t, i, k }) => {
-      const d = pos - i - .05 - k * .07;
-      t.style.opacity = clamp((.36 - Math.abs(d)) / .14);
-      t.style.transform = `translateX(${d * (k ? -120 : 120)}px)`;
+    tags.forEach(({ t: el, i, k }) => {
+      const d = (t - CHAPTERS[i].from) / (CHAPTERS[i].to - CHAPTERS[i].from) - k * .12;
+      const vis = clamp(Math.min((d - .08) / .15, (.95 - d) / .12));
+      el.style.opacity = vis;
+      el.style.transform = `translateX(${(1 - vis) * (k ? -120 : 120)}px)`;
     });
-    ring.style.opacity = clamp((.42 - Math.abs(pos - 1)) / .2) * .9;
+    ring.style.opacity = ci === 4 ? Math.min(1, lt * 4, (1 - lt) * 4) * .9 : 0;
     ring.style.transform = `scale(${1 + Math.sin(performance.now() / 600) * .04})`;
-    const cur = Math.min(N, Math.max(1, Math.round(pos) + 1));
-    count.textContent = `${String(cur).padStart(2, '0')} / ${String(N).padStart(2, '0')}`;
+    count.textContent = `${String(ci + 1).padStart(2, '0')} / ${String(CHAPTERS.length).padStart(2, '0')}`;
     bar.style.transform = `scaleX(${p})`;
-    // .9 → 1 : outro, picture recedes and the call to action appears
-    const op = clamp((p - .9) / .08);
     end.style.opacity = op;
     end.classList.toggle('on', op > .5);
-    if (op > 0) stage.style.transform = `scale(${1 - op * .25})`;
-    stage.style.filter = op > 0 ? `brightness(${1 - op * .55})` : '';
     textBox.style.opacity = tagBox.style.opacity = Math.min(1 - op, clamp((ip - .6) / .4));
   };
 })();
