@@ -44,7 +44,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Didikids Parc – Aire de Jeux Intérieure à Conakry (Taouyah)</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --green-dark: #2a7a3b;
@@ -407,6 +407,8 @@
     *, *::before, *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; }
     .reveal, .reveal.from-left, .reveal.from-right, .reveal.pop { opacity:1!important; transform:none!important; }
     .confetti, .splash, .cine { display:none!important; }
+    .h3 { height:100vh; }
+    .h3-title .ch { opacity:1!important; filter:none!important; transform:none!important; }
     .s-title .w, .s-title .dot { opacity:1!important; transform:none!important; }
   }
 
@@ -565,6 +567,69 @@
     .cine-tag::before { width:22px; }
   }
 
+  /* ===== HERO 3D : piscine à balles futuriste ===== */
+  .h3 { position:relative; height:220vh; background:#050d08; padding:0; }
+  .h3-sticky { position:sticky; top:0; height:100vh; height:100svh; overflow:hidden; }
+  .h3-bg { position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 38%, rgba(76,175,80,.28), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 100%, rgba(245,197,24,.16), transparent 70%),
+      #050d08; }
+  .h3-bg::after { content:''; position:absolute; inset:0; opacity:.35;
+    background-image:linear-gradient(rgba(125,206,130,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(125,206,130,.12) 1px, transparent 1px);
+    background-size:56px 56px;
+    mask-image:radial-gradient(ellipse at 50% 40%, #000 20%, transparent 70%); -webkit-mask-image:radial-gradient(ellipse at 50% 40%, #000 20%, transparent 70%); }
+  .h3-title { position:absolute; left:0; right:0; top:36%; translate:0 -50%; text-align:center; pointer-events:none; will-change:transform, opacity, filter; padding:0 12px; }
+  .h3-title small { display:block; font-family:'Unbounded',sans-serif; font-weight:400; font-size:clamp(.58rem,1.4vw,.85rem); letter-spacing:.45em; color:rgba(255,255,255,.65); margin-bottom:18px; text-transform:uppercase; }
+  .h3-title h1 { font-family:'Unbounded',sans-serif; font-weight:900; line-height:.9; letter-spacing:-.02em; margin:0; }
+  .h3-title h1 > span { display:block; }
+  .h3-word { font-size:clamp(2.9rem,15vw,15rem); color:#fff; text-shadow:0 0 50px rgba(125,206,130,.45), 0 0 120px rgba(76,175,80,.35); }
+  .h3-parc { font-size:clamp(2.1rem,9.5vw,9.5rem); color:transparent; -webkit-text-stroke:2px var(--yellow); text-shadow:0 0 26px rgba(245,197,24,.45); letter-spacing:.2em; margin-left:.2em; }
+  .h3-title .ch { display:inline-block; opacity:0; filter:blur(18px); transform:translateY(.25em) scale(1.3); animation:chIn 1s cubic-bezier(.2,.8,.2,1) forwards; animation-delay:calc(.35s + var(--i) * .06s); }
+  @keyframes chIn { to { opacity:1; filter:blur(0); transform:none; } }
+  #h3-canvas { position:absolute; inset:0; width:100%; height:100%; display:block; touch-action:pan-y; cursor:grab; }
+  .h3-ui { position:absolute; left:0; right:0; top:58%; display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; padding:0 18px; pointer-events:none; will-change:opacity, transform; }
+  .h3-ui p { color:rgba(255,255,255,.88); font-weight:700; font-size:clamp(.95rem,1.6vw,1.1rem); max-width:520px; text-shadow:0 2px 18px rgba(0,0,0,.95), 0 0 4px rgba(0,0,0,.8); }
+  .h3-btns { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; pointer-events:auto; }
+  .btn-glass { background:rgba(5,13,8,.45); color:white; border:1px solid rgba(255,255,255,.3); padding:16px 32px; border-radius:50px;
+    font-family:'Fredoka One',cursive; font-size:1.1rem; text-decoration:none; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    transition:background .2s, transform .2s; display:inline-flex; gap:8px; align-items:center; }
+  .btn-glass:hover { background:rgba(255,255,255,.18); transform:translateY(-3px); }
+  .h3-hint { font-family:'Unbounded',sans-serif; font-size:.6rem; letter-spacing:.35em; color:var(--yellow); text-transform:uppercase; text-shadow:0 0 10px rgba(0,0,0,.9); animation:hintPulse 2s ease-in-out infinite; }
+  @keyframes hintPulse { 50% { opacity:.35; } }
+  .h3-hud { position:absolute; inset:92px 28px 24px; pointer-events:none; font-family:'Unbounded',sans-serif; font-size:.6rem; letter-spacing:.3em; color:rgba(255,255,255,.6); text-transform:uppercase; }
+  .h3-hud > * { position:absolute; }
+  .h3-hud .tl { top:0; left:0; display:flex; align-items:center; gap:10px; }
+  .h3-hud .tr { top:0; right:0; text-align:right; }
+  .h3-hud .bl { bottom:0; left:0; }
+  .h3-hud .br { bottom:0; right:0; display:flex; align-items:center; gap:10px; }
+  .h3-hud .br::after { content:''; width:1px; height:34px; background:linear-gradient(var(--yellow),transparent); animation:scrollLine 1.6s ease-in-out infinite; transform-origin:top; }
+  @keyframes scrollLine { 0%{transform:scaleY(0)} 50%{transform:scaleY(1)} 100%{transform:scaleY(1);opacity:0} }
+  .live-dot { width:8px; height:8px; border-radius:50%; background:#4caf50; box-shadow:0 0 12px #4caf50; animation:hintPulse 1.4s infinite; }
+  .live-dot.closed { background:#ff5252; box-shadow:0 0 12px #ff5252; }
+  .h3-fade { position:absolute; inset:0; background:#07120a; opacity:0; pointer-events:none; }
+  @media(max-width:640px){
+    .h3-hud { inset:74px 16px 16px; font-size:.5rem; letter-spacing:.22em; }
+    .h3-hud .tr, .h3-hud .bl { display:none; }
+    .h3-title { top:30%; }
+    .h3-parc { -webkit-text-stroke:1.5px var(--yellow); }
+    .h3-ui { top:45%; gap:14px; }
+    .h3-ui p { font-size:.92rem; }
+    .btn-glass, .h3-btns .btn-s { padding:13px 22px; font-size:1rem; }
+  }
+
+  /* Nav over dark sections */
+  nav.on-dark { background:rgba(5,13,8,.5); box-shadow:none; }
+  nav.on-dark .nav-logo, nav.on-dark .nav-toggle { color:white; }
+  @media(min-width:641px){ nav.on-dark .nav-links a:not(.nav-cta) { color:rgba(255,255,255,.85); } }
+
+  /* Futuristic loader */
+  .splash { background:#050d08!important; gap:22px!important; }
+  .splash-name { color:white!important; font-family:'Unbounded',sans-serif!important; font-weight:900; letter-spacing:.08em; font-size:1.6rem!important; text-shadow:0 0 30px rgba(125,206,130,.5); }
+  .splash-pct { font-family:'Unbounded',sans-serif; font-size:.7rem; letter-spacing:.4em; color:var(--yellow); }
+  .splash-line { width:min(260px,60vw); height:2px; background:rgba(255,255,255,.12); overflow:hidden; }
+  .splash-line span { display:block; height:100%; background:var(--yellow); box-shadow:0 0 12px var(--yellow); transform-origin:0 50%; transform:scaleX(0); transition:transform .25s; }
+
   /* Confetti burst */
   .confetti { position:fixed; top:0; left:0; width:10px; height:14px; z-index:2000; pointer-events:none; border-radius:2px;
     animation:confetti var(--t) cubic-bezier(.2,.6,.4,1) forwards; }
@@ -574,9 +639,9 @@
 <body>
 
 <div class="splash" id="splash" aria-hidden="true">
-  <div class="splash-bear">🐻</div>
-  <div class="splash-name">Didikids <em>Parc</em></div>
-  <div class="splash-dots"><i></i><i></i><i></i><i></i></div>
+  <div class="splash-name">DIDIKIDS</div>
+  <div class="splash-line"><span id="splash-bar"></span></div>
+  <div class="splash-pct" id="splash-pct">000%</div>
 </div>
 
 <!-- NAV -->
@@ -594,50 +659,32 @@
   </ul>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="accueil">
-  <div class="hero-logo-bg"></div>
-  <div class="bubble b1"></div>
-  <div class="bubble b2"></div>
-  <div class="bubble b3"></div>
-  <div class="bubble b4"></div>
-  <div class="hero-inner">
-    <div class="hero-badge">🎈 Aire de jeux intérieure — Mar–Dim · 11h–21h</div>
-    <h1>
-      Didikids<br><span class="yl">Parc</span>
-    </h1>
-    <p>Un espace amusant et sûr pour que les enfants jouent, célèbrent leurs anniversaires et profitent de moments inoubliables en famille.</p>
-    <div class="hero-float-badges">
-      <span class="hero-float-badge">⚽ Mini-Foot</span>
-      <span class="hero-float-badge">🎱 Piscine à Balles</span>
-      <span class="hero-float-badge">🌀 Toboggan</span>
-      <span class="hero-float-badge">🏗️ Zone Lego</span>
-      <span class="hero-float-badge">🎮 Arcade</span>
+<!-- HERO 3D : piscine à balles interactive -->
+<section class="h3" id="accueil">
+  <div class="h3-sticky">
+    <div class="h3-bg"></div>
+    <div class="h3-title" id="h3-title">
+      <small data-scramble>Aire de jeux intérieure · Conakry</small>
+      <h1 aria-label="Didikids Parc"><span class="h3-word" aria-hidden="true">DIDIKIDS</span><span class="h3-parc" aria-hidden="true">PARC</span></h1>
     </div>
-    <div class="hero-btns">
-      <a href="#zones" class="btn-p">🎠 Voir le parc</a>
-      <a href="#contact" class="btn-s">📅 Réserver</a>
-      <a href="#anniversaires" class="btn-pu">🎂 Anniversaires</a>
+    <canvas id="h3-canvas" aria-hidden="true"></canvas>
+    <div class="h3-hud" aria-hidden="true">
+      <div class="tl"><span class="live-dot" id="live-dot"></span><span id="live-txt" data-scramble>Mar–Dim · 11h–21h</span></div>
+      <div class="tr" data-scramble>9.584° N · 13.660° W</div>
+      <div class="bl" data-scramble>Taouyah · Conakry · GN</div>
+      <div class="br">Défiler</div>
     </div>
+    <div class="h3-ui" id="h3-ui">
+      <p>Un espace amusant et sûr pour jouer, fêter les anniversaires et créer des souvenirs inoubliables.</p>
+      <div class="h3-btns">
+        <a href="#contact" class="btn-s">📅 Réserver</a>
+        <a href="#visite" class="btn-glass">Visiter le parc ↓</a>
+      </div>
+      <div class="h3-hint" id="h3-hint">Touchez les balles</div>
+    </div>
+    <div class="h3-fade" id="h3-fade"></div>
   </div>
 </section>
-
-<!-- STATS -->
-<div class="stats">
-  <div class="stat"><span class="stat-n">14</span><span class="stat-l">Zones de jeux</span></div>
-  <div class="stat"><span class="stat-n">500+</span><span class="stat-l">Familles heureuses</span></div>
-  <div class="stat"><span class="stat-n">200+</span><span class="stat-l">Anniversaires célébrés</span></div>
-  <div class="stat"><span class="stat-n">6j/7</span><span class="stat-l">Du mardi au dimanche</span></div>
-  <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Sécurisé & supervisé</span></div>
-</div>
-
-<!-- RUBAN ACTIVITÉS -->
-<div class="marquee" aria-hidden="true">
-  <div class="marquee-track">
-    <span>🎱 Piscine à balles</span><span>🌀 Toboggan</span><span>⚽ Mini-foot</span><span>🏗️ Lego géants</span><span>🎮 Arcade</span><span>🎂 Anniversaires</span><span>🧗 Escalade</span><span>🎠 Carrousel</span>
-    <span>🎱 Piscine à balles</span><span>🌀 Toboggan</span><span>⚽ Mini-foot</span><span>🏗️ Lego géants</span><span>🎮 Arcade</span><span>🎂 Anniversaires</span><span>🧗 Escalade</span><span>🎠 Carrousel</span>
-  </div>
-</div>
 
 <!-- VISITE CINÉMA : scène fixe pilotée par le défilement -->
 <section class="cine" id="visite" aria-label="Visite du parc">
@@ -659,6 +706,23 @@
     <div class="cine-bar"><span id="cine-bar"></span></div>
   </div>
 </section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><span class="stat-n">14</span><span class="stat-l">Zones de jeux</span></div>
+  <div class="stat"><span class="stat-n">500+</span><span class="stat-l">Familles heureuses</span></div>
+  <div class="stat"><span class="stat-n">200+</span><span class="stat-l">Anniversaires célébrés</span></div>
+  <div class="stat"><span class="stat-n">6j/7</span><span class="stat-l">Du mardi au dimanche</span></div>
+  <div class="stat"><span class="stat-n">100%</span><span class="stat-l">Sécurisé & supervisé</span></div>
+</div>
+
+<!-- RUBAN ACTIVITÉS -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>🎱 Piscine à balles</span><span>🌀 Toboggan</span><span>⚽ Mini-foot</span><span>🏗️ Lego géants</span><span>🎮 Arcade</span><span>🎂 Anniversaires</span><span>🧗 Escalade</span><span>🎠 Carrousel</span>
+    <span>🎱 Piscine à balles</span><span>🌀 Toboggan</span><span>⚽ Mini-foot</span><span>🏗️ Lego géants</span><span>🎮 Arcade</span><span>🎂 Anniversaires</span><span>🧗 Escalade</span><span>🎠 Carrousel</span>
+  </div>
+</div>
 
 <!-- ZONES / GALERIE -->
 <section id="zones">
@@ -1098,26 +1162,33 @@ document.querySelectorAll('.zones-grid, .feat-grid, .temoignages-grid, .tarifs-g
 });
 document.querySelectorAll('.feat.reveal, .tarif.reveal').forEach(c => c.classList.add('pop'));
 
-// Hero title: split into letters for the bounce-in
+// Hero title: letters materialise one by one
 (() => {
-  const h1 = document.querySelector('.hero h1');
-  h1.setAttribute('aria-label', h1.innerText.replace(/\s+/g, ' ').trim());
   let i = 0;
-  const split = el => [...el.childNodes].forEach(n => {
-    if (n.nodeType === 3) {
-      const frag = document.createDocumentFragment();
-      [...n.textContent.trim()].forEach(ch => {
-        const sp = document.createElement('span');
-        sp.className = 'ltr'; sp.textContent = ch; sp.setAttribute('aria-hidden', 'true');
-        sp.style.setProperty('--i', i++);
-        frag.appendChild(sp);
-      });
-      n.replaceWith(frag);
-    } else if (n.nodeType === 1 && n.tagName !== 'BR') split(n);
+  document.querySelectorAll('.h3-word, .h3-parc').forEach(w => {
+    w.innerHTML = [...w.textContent].map(ch => `<span class="ch" style="--i:${i++}">${ch}</span>`).join('');
   });
-  split(h1);
 })();
-document.querySelectorAll('.hero-float-badge').forEach((b, i) => b.style.setProperty('--i', i));
+
+// Live opening status (Conakry is on GMT)
+(() => {
+  const d = new Date(), h = d.getUTCHours() + d.getUTCMinutes() / 60;
+  const open = d.getUTCDay() !== 1 && h >= 11 && h < 21;
+  document.getElementById('live-txt').textContent = open ? 'Ouvert maintenant · jusqu’à 21h' : 'Fermé · Mar–Dim 11h–21h';
+  document.getElementById('live-dot').classList.toggle('closed', !open);
+})();
+
+// Futuristic text decode effect
+document.querySelectorAll('[data-scramble]').forEach((el, n) => {
+  const final = el.textContent, glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%/<>*';
+  if (reduceMotion) return;
+  let frame = 0;
+  const total = 26 + final.length;
+  setTimeout(function tick() {
+    el.textContent = [...final].map((ch, i) => ch === ' ' || i < (frame - 12) ? ch : glyphs[Math.random() * glyphs.length | 0]).join('');
+    if (++frame <= total) setTimeout(tick, 35); else el.textContent = final;
+  }, 700 + n * 180);
+});
 
 // Count-up for the stats band
 const countObs = new IntersectionObserver(entries => entries.forEach(e => {
@@ -1159,14 +1230,22 @@ function confetti(x = innerWidth / 2, y = innerHeight / 2, count = 90, spread) {
 }
 
 // ===== FULL ANIMATION =====
-// Intro splash: short, tap to skip
+// Loader: counts up while the 3D scene starts, finishes as soon as it is ready
 (() => {
-  const sp = document.getElementById('splash');
-  const hide = () => { sp.classList.add('hide'); setTimeout(() => sp.remove(), 600); };
+  const sp = document.getElementById('splash'), bar = document.getElementById('splash-bar'), pct = document.getElementById('splash-pct');
+  let v = 0, target = 85, done = false;
+  const hide = () => { if (done) return; done = true; sp.classList.add('hide'); setTimeout(() => sp.remove(), 600); };
+  window.heroReady = () => { target = 100; };
   sp.addEventListener('click', hide);
   if (reduceMotion) return hide();
-  window.addEventListener('load', () => setTimeout(hide, 500));
-  setTimeout(hide, 2000);
+  (function tick() {
+    v += (target - v) * (target === 100 ? .25 : .04);
+    bar.style.transform = `scaleX(${v / 100})`;
+    pct.textContent = String(Math.round(v)).padStart(3, '0') + '%';
+    if (v > 99.5) return setTimeout(hide, 250);
+    if (!done) requestAnimationFrame(tick);
+  })();
+  setTimeout(() => { window.heroReady(); }, 4500);
 })();
 
 // Extra elements that reveal on scroll
@@ -1234,9 +1313,8 @@ if (finePointer && !reduceMotion) {
 
 // Scroll-driven effects in one animation frame loop
 const nav = document.querySelector('nav');
-const heroInner = document.querySelector('.hero-inner');
-const heroLogo = document.querySelector('.hero-logo-bg');
-const bubbles = [...document.querySelectorAll('.bubble')];
+const heroSec = document.getElementById('accueil');
+const visiteSec = document.getElementById('visite');
 const zoneImgs = [...document.querySelectorAll('.zone-card img')];
 const track = document.querySelector('.marquee-track');
 let lastY = scrollY, velocity = 0, mx = 0, ticking = false;
@@ -1246,13 +1324,9 @@ function frame() {
   velocity = velocity * .85 + (y - lastY) * .15;
   lastY = y;
   nav.classList.toggle('scrolled', y > 40);
+  const vr = visiteSec.getBoundingClientRect();
+  nav.classList.toggle('on-dark', heroSec.getBoundingClientRect().bottom > 60 || (vr.top < 60 && vr.bottom > 60));
   if (!reduceMotion) {
-    if (y < innerHeight * 1.2) {
-      heroInner.style.translate = `0 ${y * .35}px`;
-      heroInner.style.opacity = Math.max(0, 1 - y / (innerHeight * .8));
-      heroLogo.style.rotate = `${y * .08}deg`;
-      bubbles.forEach((b, i) => b.style.translate = `0 ${y * (.15 + i * .12)}px`);
-    }
     zoneImgs.forEach(img => {
       const r = img.parentElement.getBoundingClientRect();
       if (r.bottom > 0 && r.top < innerHeight) {
@@ -1499,6 +1573,235 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth'}); }
   });
 });
+</script>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js" } }</script>
+<script type="module">
+// ===== HERO 3D : piscine à balles interactive (Three.js + petite physique maison) =====
+import * as THREE from 'three';
+import { RoomEnvironment } from 'https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/environments/RoomEnvironment.js';
+
+const sec = document.getElementById('accueil');
+const canvas = document.getElementById('h3-canvas');
+const titleEl = document.getElementById('h3-title');
+const uiEl = document.getElementById('h3-ui');
+const hudEl = sec.querySelector('.h3-hud');
+const fadeEl = document.getElementById('h3-fade');
+const hintEl = document.getElementById('h3-hint');
+const ready = () => window.heroReady && window.heroReady();
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const rnd = (a, b) => a + Math.random() * (b - a);
+
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) ready();
+else try { start(); } catch (e) { console.warn('3D indisponible', e); ready(); }
+
+function start() {
+  const mobile = innerWidth < 700;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !mobile, alpha: true, powerPreference: 'high-performance' });
+  let dpr = Math.min(devicePixelRatio, mobile ? 1.5 : 2);
+  renderer.setPixelRatio(dpr);
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  const shadows = !mobile;
+  renderer.shadowMap.enabled = shadows;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x050d08, 26, 70);
+  scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  scene.environmentIntensity = 0.9;
+
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+  const CAM = { y: 7.5, z: 24 };
+
+  scene.add(new THREE.HemisphereLight(0xd8ffe0, 0x0b1a0f, 0.7));
+  const key = new THREE.DirectionalLight(0xffffff, 2.4);
+  key.position.set(6, 20, 14);
+  if (shadows) {
+    key.castShadow = true;
+    key.shadow.mapSize.set(1024, 1024);
+    Object.assign(key.shadow.camera, { left: -20, right: 20, top: 14, bottom: -8, near: 1, far: 60 });
+    key.shadow.bias = -0.0006;
+  }
+  scene.add(key);
+  const rimG = new THREE.PointLight(0x4caf50, 80, 45); rimG.position.set(-13, 7, -5); scene.add(rimG);
+  const rimY = new THREE.PointLight(0xf5c518, 60, 45); rimY.position.set(13, 5, -3); scene.add(rimY);
+
+  // Neon floor grid + shadow catcher
+  const grid = new THREE.GridHelper(140, 140, 0x4caf50, 0x1b4524);
+  grid.material.transparent = true; grid.material.opacity = .4;
+  scene.add(grid);
+  if (shadows) {
+    const catcher = new THREE.Mesh(new THREE.PlaneGeometry(90, 50), new THREE.ShadowMaterial({ opacity: .5 }));
+    catcher.rotation.x = -Math.PI / 2; catcher.position.y = .002; catcher.receiveShadow = true;
+    scene.add(catcher);
+  }
+
+  // Balls: the real park colours (green, yellow, white, orange)
+  const R = mobile ? .42 : .55;
+  const N = mobile ? 230 : 400;
+  const mesh = new THREE.InstancedMesh(
+    new THREE.SphereGeometry(R, mobile ? 20 : 28, mobile ? 14 : 20),
+    new THREE.MeshPhysicalMaterial({ roughness: .2, metalness: 0, clearcoat: 1, clearcoatRoughness: .08 }),
+    N);
+  mesh.castShadow = mesh.receiveShadow = shadows;
+  mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  mesh.frustumCulled = false;
+  const palette = [0x22a83a, 0xf5c518, 0xffffff, 0x22a83a, 0xf5c518, 0xff8a1f].map(c => new THREE.Color(c));
+  for (let i = 0; i < N; i++) mesh.setColorAt(i, palette[i % palette.length]);
+  scene.add(mesh);
+  const M = mesh.instanceMatrix.array;
+  for (let i = 0; i < N; i++) { const o = i * 16; M[o] = M[o + 5] = M[o + 10] = M[o + 15] = 1; }
+
+  const P = new Float32Array(N * 3), V = new Float32Array(N * 3);
+  const HD = mobile ? 2.2 : 3.2;
+  let XL = 10;
+  function layout() {
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    XL = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * (CAM.z - HD) * camera.aspect - R * 1.4;
+  }
+  layout();
+  addEventListener('resize', layout);
+  for (let i = 0; i < N; i++) {
+    P[i * 3] = rnd(-XL, XL); P[i * 3 + 1] = rnd(18, 18 + N * .09); P[i * 3 + 2] = rnd(-HD, HD);
+    V[i * 3 + 1] = rnd(-8, 0);
+  }
+
+  // --- physics ---
+  const G = -30, E = .45, D = 2 * R, D2 = D * D;
+  const cells = new Map();
+  const key3 = (x, y, z) => ((x + 512) * 1024 + (y + 512)) * 64 + (z + 32);
+  const ptr = { x: 0, y: 0, vx: 0, vy: 0, on: false, nx: 0, ny: 0 };
+  const PR = mobile ? 1.1 : 1.6;
+  function step(dt) {
+    for (let i = 0; i < N; i++) {
+      const o = i * 3;
+      V[o + 1] += G * dt;
+      V[o] *= .997; V[o + 1] *= .997; V[o + 2] *= .997;
+      P[o] += V[o] * dt; P[o + 1] += V[o + 1] * dt; P[o + 2] += V[o + 2] * dt;
+      if (P[o] < -XL) { P[o] = -XL; V[o] = Math.abs(V[o]) * E; } else if (P[o] > XL) { P[o] = XL; V[o] = -Math.abs(V[o]) * E; }
+      if (P[o + 2] < -HD) { P[o + 2] = -HD; V[o + 2] = Math.abs(V[o + 2]) * E; } else if (P[o + 2] > HD) { P[o + 2] = HD; V[o + 2] = -Math.abs(V[o + 2]) * E; }
+      if (P[o + 1] < R) { P[o + 1] = R; if (V[o + 1] < 0) V[o + 1] = -V[o + 1] * E; V[o] *= .9; V[o + 2] *= .9; }
+      if (ptr.on) {
+        const dx = P[o] - ptr.x, dy = P[o + 1] - ptr.y, lim = PR + R, d2 = dx * dx + dy * dy;
+        if (d2 < lim * lim) {
+          const d = Math.sqrt(d2) || .001;
+          P[o] = ptr.x + dx / d * lim; P[o + 1] = ptr.y + dy / d * lim;
+          V[o] += dx / d * 5 + ptr.vx * .35; V[o + 1] += Math.max(0, dy / d) * 5 + Math.max(0, ptr.vy) * .35;
+        }
+      }
+    }
+    cells.clear();
+    for (let i = 0; i < N; i++) {
+      const o = i * 3, k = key3(Math.floor(P[o] / D), Math.floor(P[o + 1] / D), Math.floor(P[o + 2] / D));
+      const a = cells.get(k);
+      if (a) a.push(i); else cells.set(k, [i]);
+    }
+    for (let i = 0; i < N; i++) {
+      const o = i * 3, cx = Math.floor(P[o] / D), cy = Math.floor(P[o + 1] / D), cz = Math.floor(P[o + 2] / D);
+      for (let a = -1; a <= 1; a++) for (let b = -1; b <= 1; b++) for (let c = -1; c <= 1; c++) {
+        const list = cells.get(key3(cx + a, cy + b, cz + c));
+        if (!list) continue;
+        for (let n = 0; n < list.length; n++) {
+          const j = list[n];
+          if (j <= i) continue;
+          const q = j * 3;
+          let nx = P[q] - P[o], ny = P[q + 1] - P[o + 1], nz = P[q + 2] - P[o + 2];
+          const d2 = nx * nx + ny * ny + nz * nz;
+          if (d2 >= D2 || d2 === 0) continue;
+          const d = Math.sqrt(d2); nx /= d; ny /= d; nz /= d;
+          const push = (D - d) * .5;
+          P[o] -= nx * push; P[o + 1] -= ny * push; P[o + 2] -= nz * push;
+          P[q] += nx * push; P[q + 1] += ny * push; P[q + 2] += nz * push;
+          const vn = (V[q] - V[o]) * nx + (V[q + 1] - V[o + 1]) * ny + (V[q + 2] - V[o + 2]) * nz;
+          if (vn < 0) {
+            const imp = -(1 + E) * vn * .5;
+            V[o] -= nx * imp; V[o + 1] -= ny * imp; V[o + 2] -= nz * imp;
+            V[q] += nx * imp; V[q + 1] += ny * imp; V[q + 2] += nz * imp;
+          }
+        }
+      }
+    }
+  }
+  function explode(x, y, radius, power) {
+    for (let i = 0; i < N; i++) {
+      const o = i * 3, dx = P[o] - x, dy = P[o + 1] - y, dz = P[o + 2], d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      if (d > radius) continue;
+      const f = (1 - d / radius) * power, k = 1 / (d || 1);
+      V[o] += dx * k * f; V[o + 1] += Math.abs(dy * k) * f + f * 1.1; V[o + 2] += dz * k * f;
+    }
+  }
+
+  // --- pointer: the mouse pushes the balls, a click / tap makes them explode ---
+  const ray = new THREE.Raycaster(), plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), hit = new THREE.Vector3(), ndc = new THREE.Vector2();
+  let lastMove = 0, touched = false;
+  function toWorld(e) {
+    const r = canvas.getBoundingClientRect();
+    ndc.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    return ray.ray.intersectPlane(plane, hit);
+  }
+  const interacted = () => { if (!touched) { touched = true; hintEl.style.opacity = 0; } };
+  canvas.addEventListener('pointermove', e => {
+    ptr.nx = e.clientX / innerWidth - .5; ptr.ny = e.clientY / innerHeight - .5;
+    if (e.pointerType !== 'mouse' || !toWorld(e)) return;
+    const now = performance.now(), dt = Math.max(16, now - lastMove) / 1000;
+    ptr.vx = (hit.x - ptr.x) / dt; ptr.vy = (hit.y - ptr.y) / dt;
+    ptr.x = hit.x; ptr.y = hit.y; ptr.on = true; lastMove = now;
+  });
+  canvas.addEventListener('pointerleave', () => { ptr.on = false; });
+  canvas.addEventListener('click', e => {
+    if (!toWorld(e)) return;
+    explode(hit.x, Math.max(hit.y, 0), mobile ? 4.5 : 6, mobile ? 16 : 20);
+    interacted();
+  });
+  hintEl.textContent = mobile ? 'Touchez les balles' : 'Bougez la souris · Cliquez pour faire sauter les balles';
+
+  // --- loop: physics + scroll dive ---
+  let last = performance.now(), splashDone = false, lastP = 0, lastScroll = scrollY, slowFrames = 0, first = true;
+  function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(1 / 30, (now - last) / 1000); last = now;
+    const r = sec.getBoundingClientRect();
+    if (r.bottom <= 0) return;                          // out of view: sleep
+    const p = clamp(-r.top / (r.height - innerHeight)), e = ease(p);
+
+    // scrolling shakes the pit
+    const sd = scrollY - lastScroll; lastScroll = scrollY;
+    for (let k = 0, n = Math.min(30, Math.abs(sd) * .5); k < n; k++) V[(Math.random() * N | 0) * 3 + 1] += rnd(2, 6);
+    // diving in makes the balls splash once
+    if (lastP < .32 && p >= .32 && !splashDone) { explode(0, 0, 12, 18); splashDone = true; }
+    if (p < .1) splashDone = false;
+    lastP = p;
+
+    step(dt / 2); step(dt / 2);
+    for (let i = 0; i < N; i++) { const o = i * 16, q = i * 3; M[o + 12] = P[q]; M[o + 13] = P[q + 1]; M[o + 14] = P[q + 2]; }
+    mesh.instanceMatrix.needsUpdate = true;
+
+    const t = now / 1000;
+    camera.position.set(Math.sin(t * .25) * .6 * (1 - e) + ptr.nx * 1.4 * (1 - e), CAM.y - e * 5.4 - ptr.ny * .8 * (1 - e), CAM.z - e * 17.5);
+    camera.lookAt(0, CAM.y - e * 7.4, 0);
+    renderer.render(scene, camera);
+
+    titleEl.style.transform = `scale(${1 + e * 2.2})`;
+    titleEl.style.opacity = 1 - clamp(p * 2.2);
+    titleEl.style.filter = `blur(${p * 14}px)`;
+    uiEl.style.opacity = 1 - clamp(p * 4);
+    uiEl.style.transform = `translateY(${p * 120}px)`;
+    uiEl.style.visibility = p > .3 ? 'hidden' : '';
+    hudEl.style.opacity = 1 - clamp(p * 3);
+    fadeEl.style.opacity = clamp((p - .62) / .33);
+
+    // keep it smooth on modest phones
+    if (dt > 1 / 40) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
+    if (slowFrames > 90 && dpr > 1) { dpr = 1; renderer.setPixelRatio(1); layout(); slowFrames = 0; }
+    if (first) { first = false; ready(); }
+  }
+  requestAnimationFrame(loop);
+}
 </script>
 </body>
 </html>
